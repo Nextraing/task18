@@ -2,10 +2,8 @@ package com.saucedemo;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import utils.PropertiesLoader;
+import utils.RandomChoice;
 
 import static com.codeborne.selenide.Selenide.*;
 import static utils.Log.LOG;
@@ -17,21 +15,12 @@ public class MainPage {
 
     ElementsCollection addToCartButtonCollection = $$("button[id^='add-to-cart']");
 
+    private final PropertiesLoader propertiesLoader = new PropertiesLoader();
+    private final RandomChoice randomNumber = new RandomChoice();
+
     public String getUrl() {
 
-        Properties properties = new Properties();
-
-        try {
-
-            properties.load(new FileInputStream("./src/main/resources/site.properties"));
-
-        } catch (IOException ioException) {
-
-            LOG.error("Problem with file: ", ioException);
-
-        }
-
-        return properties.getProperty("site.address") + properties.getProperty("site.mainpage");
+        return propertiesLoader.getMainPageProperty();
     }
 
     public void openMainPage() {
@@ -42,11 +31,26 @@ public class MainPage {
     public void addProductToCart(int product) {
 
         LOG.info("Click to {}", addToCartButtonCollection.get(product).getAttribute("name"));
-
         addToCartButtonCollection.get(product).click();
     }
 
-    public int getNumberOfProductsOnPage(){
+    public void addAnyProductToCart() {
+
+        addProductToCart(randomNumber.getNumber(0, getNumberOfProductsOnPage() - 1));
+
+    }
+
+    public void addSomeProductsToCart() {
+
+        int numberOfIterations = randomNumber.getNumber(0, getNumberOfProductsOnPage() - 1);
+
+        for (int i = 0; i <= numberOfIterations; i++) {
+
+            addAnyProductToCart();
+        }
+    }
+
+    public int getNumberOfProductsOnPage() {
 
         return addToCartButtonCollection.size();
     }

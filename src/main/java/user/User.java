@@ -1,10 +1,6 @@
 package user;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
-import static utils.Log.LOG;
+import utils.PropertiesLoader;
 
 public class User {
 
@@ -16,19 +12,13 @@ public class User {
 
     public User() {
 
-        Properties properties = new Properties();
+        PropertiesLoader propertiesLoader = new PropertiesLoader();
 
-        try {
-            properties.load(new FileInputStream("./src/main/resources/user.properties"));
-        } catch (IOException ioException) {
-            LOG.error("Problem with file: ", ioException);
-        }
-
-        this.loginName = properties.getProperty("user.username");
-        this.password = properties.getProperty("user.password");
-        this.firstName = properties.getProperty("user.firstname");
-        this.lastName = properties.getProperty("user.lastname");
-        this.postalCode = properties.getProperty("user.postalcode");
+        this.loginName = propertiesLoader.getUserProperty("user.username");
+        this.password = propertiesLoader.getUserProperty("user.password");
+        this.firstName = propertiesLoader.getUserProperty("user.firstname");
+        this.lastName = propertiesLoader.getUserProperty("user.lastname");
+        this.postalCode = propertiesLoader.getUserProperty("user.postalcode");
     }
 
     public String getLoginName() {
@@ -69,5 +59,13 @@ public class User {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        return "User {" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

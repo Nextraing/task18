@@ -6,9 +6,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.saucedemo.*;
 import org.junit.jupiter.api.*;
 import user.User;
-import utils.RandomChoice;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.Log.LOG;
@@ -19,16 +17,14 @@ public class SaucedemoTests {
 
     private static final String CLASS_SIMPLE_NAME = SaucedemoTests.class.getSimpleName();
 
-    User user = new User();
+    private final User user = new User();
 
-    LoginPage loginPage = new LoginPage();
-    MainPage mainPage = new MainPage();
-    ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
-    CheckoutStepOnePage checkoutStepOnePage = new CheckoutStepOnePage();
-    CheckoutStepTwoPage checkoutStepTwoPage = new CheckoutStepTwoPage();
-    CheckoutCompletePage checkoutCompletePage = new CheckoutCompletePage();
-
-    RandomChoice randomNumber = new RandomChoice();
+    private final LoginPage loginPage = new LoginPage();
+    private final MainPage mainPage = new MainPage();
+    private final ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
+    private final CheckoutStepOnePage checkoutStepOnePage = new CheckoutStepOnePage();
+    private final CheckoutStepTwoPage checkoutStepTwoPage = new CheckoutStepTwoPage();
+    private final CheckoutCompletePage checkoutCompletePage = new CheckoutCompletePage();
 
     @BeforeAll
     void setUp() {
@@ -45,9 +41,8 @@ public class SaucedemoTests {
     @DisplayName("LogIn Test")
     void logInTest() {
 
-        LOG.info("LogIn Test.");
-
         loginPage.openLoginPage();
+        LOG.info("{} login to the site.", user);
         loginPage.login(user);
 
         assertTrue(loginPage.getLogoutLink().is(Condition.enabled));
@@ -58,10 +53,8 @@ public class SaucedemoTests {
     @DisplayName("Buy any product Test")
     void buyAnyProductTest() {
 
-        LOG.info("Buy any product Test.");
-
         mainPage.openMainPage();
-        mainPage.addProductToCart(randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1));
+        mainPage.addAnyProductToCart();
         mainPage.openShoppingCart();
         shoppingCartPage.checkout();
         checkoutStepOnePage.fillInTheForm(user);
@@ -78,15 +71,8 @@ public class SaucedemoTests {
     @DisplayName("Purchase cancellation Test")
     void purchaseCancellationTest() {
 
-        LOG.info("Purchase cancellation Test.");
-
         mainPage.openMainPage();
-        int numberOfIterations = randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1);
-        for (int i = 0; i <= numberOfIterations; i++) {
-
-            mainPage.addProductToCart(randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1));
-
-        }
+        mainPage.addSomeProductsToCart();
         mainPage.openShoppingCart();
         shoppingCartPage.checkout();
         checkoutStepOnePage.fillInTheForm(user);
@@ -103,15 +89,8 @@ public class SaucedemoTests {
     @DisplayName("Delete all products from shopping cart Test")
     void deleteAllProductsFromShoppingCartTest() {
 
-        LOG.info("Delete all products from shopping cart Test.");
-
         mainPage.openMainPage();
-        int numberOfIterations = randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1);
-        for (int i = 0; i <= numberOfIterations; i++) {
-
-            mainPage.addProductToCart(randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1));
-
-        }
+        mainPage.addSomeProductsToCart();
         mainPage.openShoppingCart();
         shoppingCartPage.deleteAllProducts();
 
@@ -126,16 +105,8 @@ public class SaucedemoTests {
     @DisplayName("Sum up products cost Test")
     void sumUpProductsCostTest() {
 
-        LOG.info("Sum up products cost Test.");
-
         mainPage.openMainPage();
-
-        int numberOfIterations = randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1);
-        for (int i = 0; i <= numberOfIterations; i++) {
-
-            mainPage.addProductToCart(randomNumber.getNumber(0, mainPage.getNumberOfProductsOnPage() - 1));
-
-        }
+        mainPage.addSomeProductsToCart();
         mainPage.openShoppingCart();
         shoppingCartPage.checkout();
         checkoutStepOnePage.fillInTheForm(user);
@@ -153,6 +124,7 @@ public class SaucedemoTests {
 
         if (shoppingCartPage.getNumberOfProducts() > 0) {
 
+            LOG.info("Shopping cart is not empty. Delete all the products.");
             shoppingCartPage.deleteAllProducts();
         }
 
@@ -160,8 +132,6 @@ public class SaucedemoTests {
 
     @AfterAll
     void tearDown() {
-
-        closeWebDriver();
 
         LOG.info("End of {}.", CLASS_SIMPLE_NAME);
     }
