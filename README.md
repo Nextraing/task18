@@ -1,6 +1,7 @@
 # Automated tests for saucedemo.com
 
 * Task18
+* Task19
 
 ### Tools
 
@@ -8,3 +9,4 @@
 - [x] Maven
 - [x] JUnit 5
 - [x] Selenide
+- [x] Cucumber
