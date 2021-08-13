@@ -16,20 +16,24 @@ public class LoginPage extends MainPage {
 
     private final PropertiesLoader propertiesLoader = new PropertiesLoader();
 
-    public SelenideElement getLoginField() {
-        return loginField;
+    public void setValueToLoginField(String value) {
+
+        loginField.setValue(value);
     }
 
-    public SelenideElement getPasswordField() {
-        return passwordField;
+    public void setValueToPasswordField(String value) {
+
+        passwordField.setValue(value);
     }
 
-    public SelenideElement getLoginButton() {
-        return loginButton;
+    public void clickOnLoginButton() {
+
+        loginButton.click();
     }
 
-    public SelenideElement getErrorMessage() {
-        return errorMessage;
+    public String getErrorMessageText() {
+
+        return errorMessage.getText();
     }
 
     public String getUrl() {

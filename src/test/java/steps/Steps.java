@@ -24,19 +24,19 @@ public class Steps {
     @Допустим("^в поле Username введено значение \"([^\"]*)\"$")
     public void fillUserNameField(String userName) {
 
-        loginPage.getLoginField().setValue(userName);
+        loginPage.setValueToLoginField(userName);
     }
 
     @Допустим("^в поле Password введено значение \"([^\"]*)\"$")
     public void fillPasswordField(String password) {
 
-        loginPage.getPasswordField().setValue(password);
+        loginPage.setValueToPasswordField(password);
     }
 
     @Допустим("нажата кнопка LOGIN")
     public void clickOnButton() {
 
-        loginPage.getLoginButton().click();
+        loginPage.clickOnLoginButton();
     }
 
     @Тогда("^открыта следующая страница \"([^\"]*)\"$")
@@ -50,7 +50,7 @@ public class Steps {
     @Тогда("^открыто сообщение ошибки \"([^\"]*)\"$")
     public void openErrorMessage(String expectedMessage) {
 
-        String actualMessage = loginPage.getErrorMessage().getText();
+        String actualMessage = loginPage.getErrorMessageText();
 
         assertEquals(expectedMessage, actualMessage, "Ошибка в сообщении о требовании пароля.");
     }
