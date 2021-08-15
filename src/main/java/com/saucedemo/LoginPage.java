@@ -12,8 +12,29 @@ public class LoginPage extends MainPage {
     private final SelenideElement loginField = $("#user-name");
     private final SelenideElement passwordField = $("#password");
     private final SelenideElement loginButton = $("#login-button");
+    private final SelenideElement errorMessage = $("[data-test='error']");
 
     private final PropertiesLoader propertiesLoader = new PropertiesLoader();
+
+    public void setValueToLoginField(String value) {
+
+        loginField.setValue(value);
+    }
+
+    public void setValueToPasswordField(String value) {
+
+        passwordField.setValue(value);
+    }
+
+    public void clickOnLoginButton() {
+
+        loginButton.click();
+    }
+
+    public String getErrorMessageText() {
+
+        return errorMessage.getText();
+    }
 
     public String getUrl() {
 
