@@ -30,6 +30,7 @@
     Примеры:
       | userName        | userPassword |
       | locked_out_user | secret_sauce |
+      | locked_out_user | secret_sauce |
 
   @fail
   Структура сценария: Проверка, что пользователь <userName> может войти на сайт

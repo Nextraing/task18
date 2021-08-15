@@ -128,6 +128,7 @@ public class SaucedemoTests {
             shoppingCartPage.deleteAllProducts();
         }
 
+        LOG.info("Shopping cart is empty.");
     }
 
     @AfterAll
